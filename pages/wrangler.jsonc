@@ -1,0 +1,13 @@
+{
+  "$schema": "../node_modules/wrangler/config-schema.json",
+  "name": "passing-place-pages",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-11-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "services": [
+    {
+      "binding": "APP",
+      "service": "passing-place"
+    }
+  ]
+}

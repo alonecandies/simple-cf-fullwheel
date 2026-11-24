@@ -155,3 +155,14 @@ vite.config.ts.timestamp-*
 .nx/cache
 .nx/workspace-data
 .nx/migrate-runs
+# Cloudflare local state and development-only variables
+.wrangler/
+.dev.vars*
+!.dev.vars.example
+
+# Account-specific Wrangler configuration; copy the public templates locally
+/wrangler.jsonc
+/wrangler.moderator.jsonc
+
+# Generated from the local Wrangler configuration
+/worker-configuration.d.ts

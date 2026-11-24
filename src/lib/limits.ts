@@ -1,0 +1,3 @@
+export const MAX_STORED_MESSAGES = 10_000;
+export const MAX_STORED_PHOTOS = 5_000;
+export const MAX_INBOUND_EMAIL_BYTES = 64 * 1024;

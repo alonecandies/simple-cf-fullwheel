@@ -1,0 +1,6 @@
+/**
+ * Example marker only. This file is generated locally from wrangler.jsonc.
+ * After copying and customizing the Wrangler config templates, run:
+ *   npx wrangler types
+ * The generated worker-configuration.d.ts is ignored by Git.
+ */

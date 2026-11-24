@@ -1,0 +1,138 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "passing-place",
+  "main": "./src/index.ts",
+  "compatibility_date": "2026-11-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.1,
+    "redact_query_string": true,
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.1
+    }
+  },
+  "triggers": {
+    "crons": ["*/15 * * * *"]
+  },
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*", "/media/*", "/share-cards/*"]
+  },
+  "vars": {
+    "TURNSTILE_SITE_KEY": "replace-with-turnstile-site-key",
+    "WEB_ANALYTICS_TOKEN": "",
+    "EMAIL_NOTIFICATIONS_ENABLED": "false",
+    "EMAIL_ROUTING_ENABLED": "false",
+    "EMAIL_ROUTING_ADDRESS": "",
+    "HYPERDRIVE_DEMO_ENABLED": "false",
+    "AI_SEARCH_ENABLED": "true",
+    "AI_SEARCH_INSTANCE": "passing-place-notes",
+    "VECTORIZE_ENABLED": "true",
+    "ZARAZ_ENABLED": "false",
+    "ZARAZ_CONSENT_PURPOSE_ID": ""
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "passing-place",
+      "database_id": "00000000-0000-4000-8000-000000000001",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "00000000000000000000000000000001"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "PHOTOS",
+      "bucket_name": "passing-place-photos"
+    }
+  ],
+  "images": {
+    "binding": "IMAGES"
+  },
+  "analytics_engine_datasets": [
+    {
+      "binding": "MODERATION_METRICS",
+      "dataset": "passing_place_moderation"
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "PUBLIC_API_RATE_LIMITER",
+      "namespace_id": "0000000000",
+      "simple": {
+        "limit": 5,
+        "period": 60
+      }
+    }
+  ],
+  "ai": {
+    "binding": "AI"
+  },
+  // This namespace is dedicated to this app. It lets the Worker create and
+  // manage only its own AI Search instance without a D1 service API token.
+  "ai_search_namespaces": [
+    { "binding": "AI_SEARCH", "namespace": "passing-place" }
+  ],
+  "vectorize": [
+    { "binding": "VECTORIZE", "index_name": "passing-place-notes" }
+  ],
+  "browser": {
+    "binding": "BROWSER"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "PRESENCE",
+        "class_name": "PresenceHub"
+      }
+    ]
+  },
+  "workflows": [
+    {
+      "name": "passing-place-moderation-workflow",
+      "binding": "MODERATION_WORKFLOW",
+      "class_name": "ModerationWorkflow"
+    }
+  ],
+  "exports": {
+    "PresenceHub": {
+      "type": "durable-object",
+      "storage": "sqlite"
+    },
+    "ModerationWorkflow": {
+      "type": "workflow",
+      "name": "passing-place-moderation-workflow"
+    }
+  },
+  "queues": {
+    "producers": [
+      {
+        "binding": "MODERATION_QUEUE",
+        "queue": "passing-place-moderation"
+      }
+    ],
+    "consumers": [
+      {
+        "queue": "passing-place-moderation",
+        "max_batch_size": 1,
+        "max_batch_timeout": 5,
+        "max_retries": 3,
+        "dead_letter_queue": "passing-place-moderation-dead"
+      },
+      {
+        "queue": "passing-place-moderation-dead",
+        "max_batch_size": 1,
+        "max_batch_timeout": 5,
+        "max_retries": 3
+      }
+    ]
+  }
+}

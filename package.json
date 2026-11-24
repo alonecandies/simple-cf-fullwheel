@@ -1,0 +1,32 @@
+{
+  "name": "simple-cf-fullwheel",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "build": "esbuild src/client/app.ts --bundle --format=iife --target=es2022 --outfile=public/app.js",
+    "typecheck": "tsc --noEmit --project tsconfig.json && tsc --noEmit --project tsconfig.worker.json",
+    "dev": "npm run build && wrangler d1 migrations apply passing-place --local && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "deploy:moderator": "wrangler deploy --config wrangler.moderator.jsonc",
+    "dev:moderator": "wrangler dev --config wrangler.moderator.jsonc",
+    "build:pages": "npm run build && mkdir -p pages/dist && cp -R public/. pages/dist/ && cp pages/_headers pages/_routes.json pages/dist/",
+    "pages:dev": "npm run build:pages && wrangler pages dev ./dist --service APP=passing-place --cwd ./pages",
+    "pages:project:create": "wrangler pages project create passing-place-pages --production-branch master --cwd ./pages",
+    "pages:deploy": "npm run build:pages && wrangler pages deploy ./dist --project-name passing-place-pages --cwd ./pages",
+    "db:local": "wrangler d1 migrations apply passing-place --local",
+    "db:remote": "wrangler d1 migrations apply passing-place --remote"
+  },
+  "devDependencies": {
+    "@cloudflare/puppeteer": "^2.0.1",
+    "esbuild": "^0.28.2",
+    "typescript": "^7.0.2",
+    "wrangler": "^4.34.0"
+  },
+  "dependencies": {
+    "postal-mime": "^4.2.1",
+    "postgres": "^3.4.9"
+  }
+}

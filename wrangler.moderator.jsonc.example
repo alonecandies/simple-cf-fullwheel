@@ -1,0 +1,46 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "passing-place-moderator",
+  "main": "./src/admin/index.ts",
+  "compatibility_date": "2026-11-23",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 0.1,
+    "redact_query_string": true,
+    "traces": {
+      "enabled": true,
+      "head_sampling_rate": 0.1
+    }
+  },
+  "access": {
+    "dev": {
+      "aud": "local-moderator",
+      "identity": {
+        "email": "local-moderator@example.test"
+      }
+    }
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "passing-place",
+      "database_id": "00000000-0000-4000-8000-000000000001",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "PHOTOS",
+      "bucket_name": "passing-place-photos"
+    }
+  ],
+  "queues": {
+    "producers": [
+      {
+        "binding": "MODERATION_QUEUE",
+        "queue": "passing-place-moderation"
+      }
+    ]
+  }
+}

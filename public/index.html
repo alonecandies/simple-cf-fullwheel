@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="A public guestbook for small hellos, good wishes, and places you have been."
+    />
+    <meta name="theme-color" content="#edf3ef" />
+    <title>Passing Place — a little guestbook</title>
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/style.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Passing Place home">
+        <span class="brand-mark" aria-hidden="true">
+          <span></span>
+        </span>
+        <span>passing place</span>
+      </a>
+      <p class="open-status">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Open to the world · <span id="visitor-count">Connecting live count…</span></span>
+      </p>
+    </header>
+
+    <main class="content-grid">
+      <section class="intro" aria-labelledby="page-title">
+        <div class="route-note" aria-hidden="true">
+          <svg viewBox="0 0 134 52" fill="none">
+            <path d="M5 34C27 34 24 11 48 11s21 30 43 30 18-23 38-23" />
+            <circle cx="5" cy="34" r="4" />
+            <circle cx="129" cy="18" r="5" />
+          </svg>
+          <span>A note from somewhere</span>
+        </div>
+        <h1 id="page-title">You passed through. Leave a little trace.</h1>
+        <p class="intro-copy">
+          A public guestbook for small hellos, good wishes, and places you have
+          been. Add a note, then see who stopped by.
+        </p>
+        <div class="entry-summary">
+          <span class="summary-number" id="message-count">—</span>
+          <span>notes left here</span>
+        </div>
+      </section>
+
+      <aside class="form-panel" aria-labelledby="form-title">
+        <div class="form-heading">
+          <span class="form-mark" aria-hidden="true">✳</span>
+          <div>
+            <p class="form-kicker">Your turn</p>
+            <h2 id="form-title">Leave a note</h2>
+          </div>
+        </div>
+        <form id="message-form">
+          <label for="name">Your name</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            autocomplete="name"
+            maxlength="40"
+            placeholder="What should we call you?"
+            required
+          />
+
+          <div class="message-label-row">
+            <label for="message">Your note</label>
+            <span id="character-count">0 / 240</span>
+          </div>
+          <textarea
+            id="message"
+            name="message"
+            rows="4"
+            maxlength="240"
+            placeholder="A hello, a wish, a thought…"
+            required
+          ></textarea>
+
+          <label for="image">Add a photo <span class="optional-label">optional</span></label>
+          <input
+            id="image"
+            name="image"
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+          />
+          <p class="upload-note">JPG, PNG, or WebP · up to 512 KB</p>
+
+          <div id="turnstile" class="turnstile-slot"></div>
+          <button id="submit-button" type="submit">
+            <span>Add my note</span>
+            <span aria-hidden="true">↗</span>
+          </button>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+          <p class="privacy-note">
+            Notes and approved photos are public. Automated checks review each
+            submission first; leave out anything private.
+          </p>
+        </form>
+      </aside>
+
+      <section class="notes-section" aria-labelledby="notes-title">
+        <div class="notes-heading">
+          <div>
+            <p class="section-kicker">The guestbook</p>
+            <h2 id="notes-title">Notes from visitors</h2>
+          </div>
+          <span class="notes-latest">Most recent first</span>
+        </div>
+        <div id="search-panel" class="search-panel" hidden>
+          <form id="search-form" class="search-form">
+            <label class="visually-hidden" for="search-query">Search approved notes</label>
+            <select id="search-provider" aria-label="Search method" hidden></select>
+            <input
+              id="search-query"
+              name="query"
+              type="search"
+              maxlength="120"
+              placeholder="Find a note by meaning…"
+              autocomplete="off"
+              required
+            />
+            <button type="submit">Search</button>
+          </form>
+          <p id="search-status" class="search-status" role="status" aria-live="polite"></p>
+          <ol id="search-results" class="notes-list search-results"></ol>
+        </div>
+        <ol class="notes-list" id="notes-list">
+          <li class="loading-note">Finding the latest notes…</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="page-footer">
+      <p>One small stop on the internet.</p>
+      <p>Passing Place is a public guestbook. No sign-in needed.</p>
+    </footer>
+  </body>
+</html>
